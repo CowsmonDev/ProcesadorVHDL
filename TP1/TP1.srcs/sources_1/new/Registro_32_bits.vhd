@@ -21,7 +21,6 @@ begin
 	process (clk)
 	begin
 		if (rising_edge(clk)) then
-			
 			if (reset = '1') then
 				r <= (others => '0');
 			elsif (ce='1') then
