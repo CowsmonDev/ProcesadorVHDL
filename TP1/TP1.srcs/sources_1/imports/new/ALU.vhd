@@ -26,10 +26,11 @@ begin
 
 	op_and <= (a and b);
 	op_or <= (a or b);
-	op_less <= x"0" when (a < b) else x"1";
-	op_sum <= std_logic_vector(unsigned(a) + unsigned(b));
-	op_rest <= std_logic_vector(unsigned(a) - unsigned(b));
-	op_left <= b(15 to 0) & x"00";
+	op_less <= (others => '0') when b < a else x"00000001";
+	op_sum <= std_logic_vector(signed(a) + signed(b));
+	op_rest <= std_logic_vector(signed(a) - signed(b));
+	op_left <= b(15 downto 0) & x"0000";
+    
 
     with control select
         r <=
@@ -37,8 +38,9 @@ begin
 			op_or when "001",
 			op_sum when "010",
 			op_rest when "110",
+            op_left when "100",
 			op_less when others;
 	
-	zero <= '1' when (r = "0") else '0';
+	zero <= '1' when (r = x"00000000") else '0';
 	result <= r;
 end Behavioral;
